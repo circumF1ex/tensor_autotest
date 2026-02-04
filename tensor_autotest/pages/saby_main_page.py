@@ -6,12 +6,11 @@ from selenium.webdriver.common.by import By
 
 class SabyMainPage(BasePage):
 
-    page_adress = "https://saby.ru"
+    PAGE_ADRESS = "https://saby.ru"
     header_contacts_CSS = "li.sbisru-Header__menu-item:nth-child(2) > div:nth-child(1) > div:nth-child(1) > span:nth-child(1)"
     header_contacts_menu_CSS = "div.sbisru-Header-ContactsMenu:nth-child(2)"
-    #link_CSS1 = "div.sbisru-Header-ContactsMenu:nth-child(2) > a:nth-child(4)" не сработал
     header_contacts_link_CSS2 = "a[href='/contacts']" 
-    #link_xPath = "/html/body/div[1]/div/div/div/div[1]/div/div/div/div/div/div[2]/a[2]" сработал, но заменён на рабочий CSS
+    footer_contacts_link_CSS = "a.sbisru-Footer__link[href='/contacts']"
 
     def __init__(self, browser):
         super().__init__(browser)
@@ -33,7 +32,18 @@ class SabyMainPage(BasePage):
         return link
 
     def click_header_contacts_link(self):
-        self.get_header_contacts_link().click()
+        link = self.get_header_contacts_link()
+        link.click()
 
-    def open(self):
-        super().open(self.page_adress)
+    def get_footer_contacts_link(self):
+        link = self.find(By.CSS_SELECTOR, self.footer_contacts_link_CSS)
+        return link
+
+    def click_footer_contacts_link(self):
+        link = self.get_footer_contacts_link()
+        link.click()
+
+    def open(self, url = PAGE_ADRESS):
+        super().open(url)
+
+    

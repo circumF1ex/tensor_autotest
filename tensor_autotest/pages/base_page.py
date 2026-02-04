@@ -1,8 +1,11 @@
 class BasePage:
+
+    PAGE_ADRESS = ""
+
     def __init__(self, driver):
         self.driver = driver
 
-    def open(self, url):
+    def open(self, url = PAGE_ADRESS):
         self.driver.get(url)
 
     def find(self, *args):
