@@ -12,7 +12,7 @@ class SabyContactsPage(BasePage):
     REGION_CSS = ".sbis_ru-Region-Chooser.ml-16.ml-xm-0"
     PARTNERS_LIST_CSS = '#contacts_list'
     REGION_PANEL_CSS = '.sbis_ru-Region-Panel.sbis_ru-Region-Panel-l'
-    KAMCHATSKY_KRAY_CSS = ".sbis_ru-link[title='Камчатский край']"
+    KAMCHATSKY_KRAY_CSS = "li.sbis_ru-Region-Panel__item:nth-child(43) > span:nth-child(1) > span:nth-child(1)"
 
     def __init__(self, browser):
         super().__init__(browser)
@@ -24,6 +24,8 @@ class SabyContactsPage(BasePage):
         return self.find_tensor_banner().get_attribute("href")
 
     def get_region_element(self):
+        WebDriverWait(self.driver, 10).until(
+            EC.visibility_of_element_located((By.CSS_SELECTOR, self.REGION_CSS)))
         return self.find(By.CSS_SELECTOR, self.REGION_CSS)
 
     def get_region_name(self):
@@ -37,7 +39,17 @@ class SabyContactsPage(BasePage):
         pass
     
     def click_kamchatsky_kray_link(self):
-        pass
+        self.click_region_element()
+        
+        WebDriverWait(self.driver, 10).until(
+            EC.visibility_of_element_located((By.CSS_SELECTOR, self.REGION_PANEL_CSS)))
+        
+        region_panel = self.find(By.CSS_SELECTOR, self.REGION_PANEL_CSS)
+        kamchatsky_kray_link = region_panel.find_element(
+            By.CSS_SELECTOR, self.KAMCHATSKY_KRAY_CSS)
+        
+        self.driver.execute_script("arguments[0].scrollIntoView(true);", kamchatsky_kray_link)
+        self.driver.execute_script("arguments[0].click();", kamchatsky_kray_link)
         
     def get_partners(self):
         partners = WebDriverWait(self.driver, 10).until(

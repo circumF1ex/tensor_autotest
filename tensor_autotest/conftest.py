@@ -5,9 +5,9 @@ import pytest
 @pytest.fixture()
 def browser():
     options = Options()
-    #options.add_argument("--headless")
+    options.add_argument("--headless")
     browser = webdriver.Firefox(options=options)
     browser.maximize_window()
-    browser.implicitly_wait(3)
+    browser.implicitly_wait(5)
     yield browser
     browser.close()
